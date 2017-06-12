@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009688</color>
+    <color name="colorPrimaryDark">#0E4A41</color>
+    <color name="colorAccent">#FF9804</color>
+
+
+    <!-- Common -->
+    <color name="transparent">#00000000</color><!-- 透明色 -->
+
+    <color name="translucent">#a0000000</color><!-- 半透明 -->
+    <color name="white">#ffffff</color>   <!-- 纯白色 -->
+    <color name="photo_press">#f2f2f2</color>   <!-- 照相机-->
+    <color name="black">#000000</color>
+    <color name="blue">#0000FF</color>
+    <color name="yellow">#FFFF00</color>
+    <color name="teal">#008080</color>
+    <color name="red">#e4593f</color>
+    <color name="pink">#FF8992</color><!-- 粉色 -->
+    <color name="gray">#cfEEEEEE</color>
+
+    <!--   manmage citys     -->
+    <color name="white_smoke">#F8F8F8</color>
+    <color name="orange_peel">#FF9804</color>
+    <color name="dark_cyan">#009688</color>
+    <color name="cyprus">#0E4A41</color>
+    <color name="gallery">#D9D7D5</color>
+    <color name="cherokee">#F4D081</color>
+
+    <color name="main_bg_white">#efefef</color>
+    <color name="main_text_white">@color/white_smoke</color>
+
+    <color name="city_text_edit">@color/orange_peel</color>
+
+
+    <color name="overview_text_white_light">#ccffffff</color>
+    <color name="overview_text_white_deep">#eeffffff</color>
+</resources>

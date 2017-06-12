@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/etSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:hint="Search"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:maxLines="1"
+            android:singleLine="true"
+            app:met_baseColor="@color/white_smoke"
+            app:met_clearButton="true"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelText="Search"
+            app:met_floatingLabelTextColor="@color/city_text_edit"
+            app:met_helperText="e.g.BeiJing,Guilin"
+            app:met_helperTextColor="@color/city_text_edit"
+            app:met_primaryColor="@color/city_text_edit"
+            app:met_textColor="@color/white_smoke"
+            app:met_underlineColor="@color/city_text_edit"
+
+            />
+
+    </LinearLayout>
+
+</FrameLayout>

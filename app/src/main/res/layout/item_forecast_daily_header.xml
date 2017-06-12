@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="32dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tvDailyTime"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:background="@color/colorPrimary"
+        android:textSize="16sp"
+        android:gravity="center_vertical"
+        android:textColor="@color/white"
+        android:paddingLeft="18dp"
+        android:paddingRight="24dp"
+        tools:text="多云间晴" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        />
+
+</RelativeLayout>

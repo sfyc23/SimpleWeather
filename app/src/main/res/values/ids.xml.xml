@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="overview_icon_left" type="id" />
+    <item name="overview_text_right_top" type="id" />
+
+</resources>

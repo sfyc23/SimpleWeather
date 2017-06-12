@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="160dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <ImageView
+            android:id="@+id/ivCondition"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerVertical="true"
+            tools:src="@drawable/ic_pressure" />
+
+        <TextView
+            android:id="@+id/tvCondition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@+id/ivCondition"
+            android:textSize="18sp"
+            tools:text="多云间晴" />
+
+        <TextView
+            android:id="@+id/tvTemp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="6dp"
+            android:textSize="18sp"
+            tools:text="32/15" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            style="@style/LlDaily">
+            <TextView
+                android:id="@+id/tvWind"
+                style="@style/TvDailyContent"
+                tools:text="西北1.2米/秒" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="风况" />
+
+            <TextView
+                android:id="@+id/tvTotalprecip"
+                style="@style/TvDailyContent"
+                tools:text="0.1in" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="降雨量" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LlDaily">
+            <TextView
+                android:id="@+id/tvSunrise"
+                style="@style/TvDailyContent"
+                tools:text="5：47" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="日出" />
+
+            <TextView
+                android:id="@+id/tvSunset"
+                style="@style/TvDailyContent"
+                tools:text="19：29" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="日落" />
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/LlDaily">
+            <TextView
+                android:id="@+id/tvMoonrise"
+                style="@style/TvDailyContent"
+                tools:text="21：37" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="月升" />
+
+            <TextView
+                android:id="@+id/tvMoonset"
+                style="@style/TvDailyContent"
+                tools:text="07：55" />
+
+            <TextView
+                style="@style/TvDailyTitle"
+                android:text="月落" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

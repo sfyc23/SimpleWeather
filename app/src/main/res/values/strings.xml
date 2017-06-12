@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SimpleWeather</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="main_nav_overview">Overview</string>
+    <string name="main_nav_daily">Daily Forecasts</string>
+    <string name="main_nav_hourly">Hourly Forecasts</string>
+    <string name="main_nav_map">Maps</string>
+    <string name="title_activity_city">Manage Cities</string>
+
+    <string name="city_name_error">输入的城市名有误</string>
+    <string name="city_name_empty">城市名不能为空</string>
+    <string name="city_name_equals">输出城市名与当前一致</string>
+    <string name="city_name_search">检查城市名是否有效</string>
+
+
+</resources>
