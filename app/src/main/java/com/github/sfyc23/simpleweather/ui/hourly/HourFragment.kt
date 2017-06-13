@@ -10,7 +10,6 @@ import com.github.sfyc23.simpleweather.R
 import com.github.sfyc23.simpleweather.data.event.UpdateForecastEvent
 import com.github.sfyc23.simpleweather.data.model.ForecastResult
 import com.github.sfyc23.simpleweather.ui.daily.ForecastHourAdapter
-import com.github.sfyc23.simpleweather.util.log
 import com.github.sfyc23.simpleweather.util.rxbus.busRemoveStickyEvent
 import com.github.sfyc23.simpleweather.util.rxbus.busToObservableSticky
 import com.trello.rxlifecycle2.components.support.RxFragment
@@ -49,7 +48,9 @@ class HourFragment : RxFragment() {
 
         loadData(DelegatesExt.forecastResult)
 
-        busToObservableSticky(UpdateForecastEvent::class.java).subscribe {
+        busToObservableSticky(UpdateForecastEvent::class.java)
+                .compose(this.bindToLifecycle())
+                .subscribe {
             loadData(it.fr)
         }
 
@@ -61,7 +62,7 @@ class HourFragment : RxFragment() {
         if (fr == null) {
             return
         }
-        fr.forecast.forecastday.get(0).hour.toString().log()
+//        fr.forecast.forecastday.get(0).hour.toString().log()
         mAdapter.addData(fr.forecast.forecastday.get(0).hour)
     }
 
