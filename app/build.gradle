@@ -59,5 +59,18 @@ dependencies {
     compile 'com.github.SilenceDut:jpinyin:v1.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.4'
 
+    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
+    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+    testCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
+
+    // If you want to use Kotlin syntax
+    compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.1.0'
+    // If you want to use Kotlin syntax with Android Lifecycle
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.1.0'
+// If you want pre-written Activities and Fragments you can subclass as providers
+    compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
+
     testCompile 'junit:junit:4.12'
 }

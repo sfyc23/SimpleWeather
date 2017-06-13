@@ -1,27 +1,29 @@
 package com.github.sfyc23.weather.ui.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.antonioleiva.weatherapp.extensions.DelegatesExt
 import com.github.sfyc23.simpleweather.R
+import com.github.sfyc23.simpleweather.data.event.UpdateForecastEvent
 import com.github.sfyc23.simpleweather.data.model.ForecastResult
 import com.github.sfyc23.simpleweather.ui.daily.ForecastHourAdapter
-import com.google.gson.Gson
-import com.google.gson.JsonSyntaxException
+import com.github.sfyc23.simpleweather.util.log
+import com.github.sfyc23.simpleweather.util.rxbus.busRemoveStickyEvent
+import com.github.sfyc23.simpleweather.util.rxbus.busToObservableSticky
+import com.trello.rxlifecycle2.components.support.RxFragment
 import kotlinx.android.synthetic.main.fragment_daily.*
 
 
 /**
  * Author :leilei on 2017/5/28 22:25
  */
-class HourFragment : Fragment() {
+class HourFragment : RxFragment() {
 
-    var spLastForecast: String by DelegatesExt.preference(OverviewFragment.SP_KEY_FORECAST, OverviewFragment.SP_VLAUE_DEFAULT_FORECAST)
-    var gson: Gson = Gson()
+//    var spLastForecast: String by DelegatesExt.preference(OverviewFragment.SP_KEY_FORECAST, OverviewFragment.SP_VLAUE_DEFAULT_FORECAST)
+//    var gson: Gson = Gson()
 
     companion object Factory {
         fun newInstance(): HourFragment {
@@ -40,21 +42,31 @@ class HourFragment : Fragment() {
             setHasFixedSize(true)
             var linearlayoutManager = LinearLayoutManager(context)
             layoutManager = linearlayoutManager
+//            var fhAdapter = ForecastHourAdapter(fr.forecast.forecastday.get(0).hour)
+            recyclerView.adapter = mAdapter
         }
 
-        try {
-            var lfr = gson.fromJson(spLastForecast, ForecastResult::class.java)
-            if (lfr.current != null) {
-                loadData(lfr)
-            }
-        } catch (e: JsonSyntaxException) {
-//        throw Throwable("格式化出错")
+
+        loadData(DelegatesExt.forecastResult)
+
+        busToObservableSticky(UpdateForecastEvent::class.java).subscribe {
+            loadData(it.fr)
         }
 
     }
 
-    fun loadData(fr: ForecastResult) {
-        var adapter = ForecastHourAdapter(fr.forecast.forecastday.get(0).hour)
-        recyclerView.adapter = adapter
+    var mAdapter = ForecastHourAdapter()
+
+    fun loadData(fr: ForecastResult?) {
+        if (fr == null) {
+            return
+        }
+        fr.forecast.forecastday.get(0).hour.toString().log()
+        mAdapter.addData(fr.forecast.forecastday.get(0).hour)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        busRemoveStickyEvent(UpdateForecastEvent::class.java)
     }
 }

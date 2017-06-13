@@ -1,25 +1,25 @@
 package com.github.sfyc23.weather.ui.fragments
 
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.antonioleiva.weatherapp.extensions.DelegatesExt
 import com.github.sfyc23.simpleweather.R
 import com.github.sfyc23.simpleweather.data.event.CityEvent
+import com.github.sfyc23.simpleweather.data.event.UpdateForecastEvent
 import com.github.sfyc23.simpleweather.data.model.ForecastResult
 import com.github.sfyc23.simpleweather.data.network.HttpManager
 import com.github.sfyc23.simpleweather.data.network.WeatherObserver
 import com.github.sfyc23.simpleweather.ui.city.CityActivity
-import com.github.sfyc23.simpleweather.util.log
+import com.github.sfyc23.simpleweather.util.rxbus.busPostSticky
 import com.github.sfyc23.simpleweather.util.rxbus.busRemoveStickyEvent
 import com.github.sfyc23.simpleweather.util.rxbus.busToObservableSticky
-import com.github.sfyc23.weather.extensions.inflate
-import com.github.sfyc23.weather.extensions.loadImg
-import com.github.sfyc23.weather.extensions.toTempString
+import com.github.sfyc23.weather.extensions.*
 import com.google.gson.Gson
 import com.google.gson.JsonSyntaxException
+import com.trello.rxlifecycle2.components.support.RxFragment
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_overview.*
@@ -31,10 +31,12 @@ import java.util.*
 
 
 
+
+
 /**
  * Author :leilei on 2017/5/28 22:25
  */
-class OverviewFragment : Fragment() {
+class OverviewFragment : RxFragment() {
 
     companion object Factory {
         fun newInstance(): OverviewFragment {
@@ -66,14 +68,11 @@ class OverviewFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-//        var spCityName :String by DelegatesExt.preference(activity, CityActivity.CITY_NAME, CityActivity.DEFAULT_NAME)
-//        tvCity.text = spCityName
-
         requestWeather(spCityName);
 
-//        srlOverview.setOnClickListener {  }
-
-        busToObservableSticky(CityEvent::class.java).subscribe {
+        busToObservableSticky(CityEvent::class.java)
+                .compose(this.bindToLifecycle())
+                .subscribe {
             requestWeather(it.cityName, true)
         }
 
@@ -81,21 +80,21 @@ class OverviewFragment : Fragment() {
             requestWeather(spCityName)
         }
 
-        spUpdateTime.log()
 
         try {
             var lfr = gson.fromJson(spLastForecast, ForecastResult::class.java)
             if (lfr.current != null) {
                 loadData(lfr)
+                DelegatesExt.forecastResult = lfr
             }
         } catch (e: JsonSyntaxException) {
 //        throw Throwable("格式化出错")
         }
+
         activity.runOnUiThread {
             //输出格式为｛15：52 星期一 12/06｝
-            val dateFormat = DateTimeFormat.forPattern("HH:mm E dd/MM a")
+            val dateFormat = DateTimeFormat.forPattern("HH:mm E dd/MM ")
                     .withLocale(Locale.CHINA)
-
             tvCurrentTime.text = dateFormat.print(LocalDateTime())
 
         }
@@ -109,12 +108,15 @@ class OverviewFragment : Fragment() {
         if (!isForced) {
             var currentTime: Long = Date().time
             if (currentTime - spUpdateTime < MIN_REFRESH_INTERVAL) {
+
+                Handler().postDelayed({ srlOverview.isRefreshing = false }, 1000)
                 return;
             }
         }
 
         var weatherService = HttpManager.getInstance().weatherService
         weatherService.getWeatherForeacast(cityName)
+                .compose(this.bindToLifecycle())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnSubscribe {
@@ -131,11 +133,15 @@ class OverviewFragment : Fragment() {
                     override fun onWeatherNext(fr: ForecastResult) {
 
                         spUpdateTime = Date().time
-                        spLastForecast = gson.toJson(fr)
+                        tvLastUpdateTime.text = getTimeFormatText(spUpdateTime)
 
+                        spLastForecast = gson.toJson(fr)
                         DelegatesExt.forecastResult = fr
 
+                        busPostSticky(UpdateForecastEvent(fr))
+
                         loadData(fr)
+
 
                     }
                 })
@@ -144,23 +150,21 @@ class OverviewFragment : Fragment() {
 
     fun loadData(fr: ForecastResult) {
 
-        tvLastUpdateTime.text = "最近更新:刚刚"
-//        var temp = "${fm.day.maxtemp_c}°/ ${fm.day.mintemp_c}°"
-
         tvMaxTemp.text = "${fr.forecast.forecastday.get(0).day.maxtemp_c}°"
         tvMinTemp.text = "${fr.forecast.forecastday.get(0).day.mintemp_c}°"
         with(fr.current) {
 
             tvCondition.text = condition.text
-            ivCondition.loadImg("https:" + condition.icon)
-            tvTemp.text = temp_c.toTempString()
+            ivCondition.loadImg(condition.icon)
 
-            tvFeelLike.text = feelslike_c.toTempString()
-            tvCloud.text = cloud.toString() + "%"
-            tvWind.text = wind_kph.toString() + " kph " + wind_degree + "°"
-            tvHumidty.text = humidity.toString() + "%"
-            tvVisibility.text = vis_km.toString() + " km"
-            tvPressure.text = pressure_mb.toString() + " mbar"
+            tvTemp.text = temp_c.toTempByCelsius()
+            tvFeelLike.text = feelslike_c.toTempByCelsius()
+
+            tvCloud.text = cloud.toPercent()
+            tvWind.text = wind_dir.toWindDir() + wind_kph.toKph()
+            tvHumidty.text = humidity.toPercent()
+            tvVisibility.text = vis_km.toKm()
+            tvPressure.text = "${pressure_mb}mbar"
 
         }
     }
@@ -168,6 +172,48 @@ class OverviewFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         busRemoveStickyEvent(CityEvent::class.java)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        tvLastUpdateTime.text = getTimeFormatText(spUpdateTime)
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (!hidden) {
+            tvLastUpdateTime.text = getTimeFormatText(spUpdateTime)
+        }
+    }
+
+
+    /**
+     * 返回文字描述的日期
+     * @param dates
+     * @return
+     */
+    fun getTimeFormatText(dates: Long): String {
+        if (spUpdateTime == SP_VLAUE_DEFAULT_UPDATE_TIME) {
+            return ""
+        }
+
+        val difference = Date().time - dates
+        val minutes = (difference / (1000 * 60)).toInt()
+
+        if (minutes < 1) {
+            return "最近更新:刚刚"
+        } else if (minutes < 60) {
+            return "最近更新:$minutes 分钟前"
+        } else if (minutes < 60 * 24) {
+            return "最近更新:${minutes / 60}小时前"
+        } else if (minutes < 60 * 24 * 30) {
+            return "最近更新:${minutes / (60 * 24)}天前"
+        } else if (minutes < 60 * 24 * 30 * 30) {
+            return "最近更新:${minutes / (60 * 24 * 30)} 月前"
+        } else {
+            return "老长时间了"
+        }
+        return ""
     }
 
 

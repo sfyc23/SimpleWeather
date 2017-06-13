@@ -32,7 +32,7 @@ class CityActivity : AppCompatActivity() {
         val SP_KEY_CITY_NAME = "cityName"
         val SP_VLAUE_DEFAULT_NAME = "beijing"
 
-        fun getStartActivity(cxt: Context): Intent {
+        fun getStartIntent(cxt: Context): Intent {
             return Intent(cxt, CityActivity::class.java)
         }
     }
@@ -95,7 +95,7 @@ class CityActivity : AppCompatActivity() {
                     override fun onWeatherNext(t: List<SearchEntity>) {
                         if (!t.isEmpty() || t.size > 0) {
 
-                            alert("当前城市为$spCityName，是否切换到$cityName", "切换城市") {
+                            alert("当前城市为 $spCityName，是否切换到 $cityName", "切换城市") {
                                 yesButton {
                                     spCityName = cityName
 //                                    RxBus.getDefault().postSticky(CityEvent(cityName))

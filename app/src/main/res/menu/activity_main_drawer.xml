@@ -14,18 +14,18 @@
             android:id="@+id/nav_hourly"
             android:icon="@drawable/ic_menu_hourly"
             android:title="@string/main_nav_hourly" />
-        <item
-            android:id="@+id/nav_map"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="@string/main_nav_map" />
     </group>
-
 
     <item
         android:id="@+id/nav_setting"
-        android:title="Setting" />
-    <item
-        android:id="@+id/nav_about"
-        android:title="About" />
+        android:title="@string/action_settings">
+        <menu>
+            <item
+                android:id="@+id/nav_about"
+                android:icon="@drawable/ic_menu_about"
+                android:title="About"/>
+        </menu>
+    </item>
+
 
 </menu>

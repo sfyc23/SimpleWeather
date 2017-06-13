@@ -2,46 +2,43 @@ package com.github.sfyc23.simpleweather.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.NavigationView
-import android.support.design.widget.Snackbar
-import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentTransaction
 import android.support.v4.view.GravityCompat
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
+import com.antonioleiva.weatherapp.extensions.DelegatesExt
 import com.github.sfyc23.simpleweather.R
+import com.github.sfyc23.simpleweather.data.event.CityEvent
 import com.github.sfyc23.simpleweather.ui.city.CityActivity
 import com.github.sfyc23.simpleweather.util.rxbus.busRemoveAllStickyEvents
+import com.github.sfyc23.simpleweather.util.rxbus.busRemoveStickyEvent
+import com.github.sfyc23.simpleweather.util.rxbus.busToObservableSticky
 import com.github.sfyc23.weather.ui.fragments.DailyFragment
 import com.github.sfyc23.weather.ui.fragments.HourFragment
 import com.github.sfyc23.weather.ui.fragments.OverviewFragment
+import com.trello.rxlifecycle2.components.support.RxAppCompatActivity
+import kotlinx.android.synthetic.main.layout_toolbar.*
 import org.jetbrains.anko.toast
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : RxAppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
-    var mFragment: Fragment? = null
 
-    companion object Factory {
-        val LAST_UPDATE_TIME = "lastUpdateTime"
-        val DEFAULT_TIME = -1L
-    }
+    var overviewFragment: OverviewFragment? = null
+    var dailyFragment: DailyFragment? = null
+    var hourFragment: HourFragment? = null
+
+    var spCityName: String by DelegatesExt.preference(CityActivity.SP_KEY_CITY_NAME, CityActivity.SP_VLAUE_DEFAULT_NAME)
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
-        setSupportActionBar(toolbar)
 
-        val fab = findViewById(R.id.mainFab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-        }
+        toolbar.title = spCityName
+        setSupportActionBar(toolbar)
 
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
         val toggle = ActionBarDrawerToggle(
@@ -52,14 +49,19 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navigationView = findViewById(R.id.nav_view) as NavigationView
         navigationView.setNavigationItemSelectedListener(this)
 
-
+        navigationView.setCheckedItem(R.id.nav_overview)
         selectFragment(R.id.nav_overview)
+//
+        busToObservableSticky(CityEvent::class.java)
+                .compose(this.bindToLifecycle())
+                .subscribe {
+                    toolbar.title = it.cityName
+
+                }
+
 
     }
 
-    var overviewFragment: OverviewFragment? = null
-    var dailyFragment: DailyFragment? = null
-    var hourFragment: HourFragment? = null
 
     override fun onBackPressed() {
         val drawer = findViewById(R.id.drawer_layout) as DrawerLayout
@@ -79,7 +81,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
 
         when (item.itemId) {
-            R.id.action_city -> startActivity(CityActivity.getStartActivity(this))
+            R.id.action_city -> startActivity(CityActivity.getStartIntent(this))
             else -> toast("22")
         }
         return true
@@ -100,7 +102,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         val fm = supportFragmentManager
         val transaction = fm.beginTransaction()
-        hideAllFragment(transaction)
+
+        if (fragmentId != R.id.nav_about) {
+            hideAllFragment(transaction)
+        }
+
         when (fragmentId) {
             R.id.nav_overview -> if (null == overviewFragment) {
                 overviewFragment = OverviewFragment.newInstance()
@@ -108,18 +114,21 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             } else {
                 transaction.show(overviewFragment)
             }
+
             R.id.nav_daily -> if (null == dailyFragment) {
                 dailyFragment = DailyFragment.newInstance()
                 transaction.add(R.id.contentFrame, dailyFragment, "dailyFragment")
             } else {
                 transaction.show(dailyFragment)
             }
+
             R.id.nav_hourly -> if (null == hourFragment) {
-                hourFragment = HourFragment.newInstance ()
+                hourFragment = HourFragment.newInstance()
                 transaction.add(R.id.contentFrame, hourFragment, "trending")
             } else {
                 transaction.show(hourFragment)
             }
+
 
         }
 
@@ -144,6 +153,8 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
     override fun onDestroy() {
         super.onDestroy()
+        busRemoveStickyEvent(CityEvent::class.java)
         busRemoveAllStickyEvents()
+
     }
 }

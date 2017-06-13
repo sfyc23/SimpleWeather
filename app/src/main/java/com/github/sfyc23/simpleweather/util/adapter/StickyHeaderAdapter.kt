@@ -51,4 +51,6 @@ interface StickyHeaderAdapter<T : RecyclerView.ViewHolder> {
      * @param position the header's item position
      */
     fun onBindHeaderViewHolder(headerViewHolder: T, position: Int)
+
+
 }

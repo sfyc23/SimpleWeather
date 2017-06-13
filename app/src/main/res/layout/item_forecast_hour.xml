@@ -32,7 +32,7 @@
             android:layout_height="48dp"
             android:layout_toRightOf="@+id/tvTemp"
             android:layout_marginLeft="4dp"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_launcher"
             android:layout_centerVertical="true"
             />
     </RelativeLayout>
