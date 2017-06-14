@@ -19,7 +19,6 @@ class MyApplication : Application() {
         super.onCreate()
         instance = this
 
-
         if(BuildConfig.DEBUG){
             if (LeakCanary.isInAnalyzerProcess(this)) {
                 return;

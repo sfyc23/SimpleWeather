@@ -76,6 +76,7 @@ class OverviewFragment : RxFragment() {
             requestWeather(it.cityName, true)
         }
 
+
         srlOverview.setOnRefreshListener {
             requestWeather(spCityName)
         }
@@ -96,7 +97,6 @@ class OverviewFragment : RxFragment() {
             val dateFormat = DateTimeFormat.forPattern("HH:mm E dd/MM ")
                     .withLocale(Locale.CHINA)
             tvCurrentTime.text = dateFormat.print(LocalDateTime())
-
         }
 
     }
