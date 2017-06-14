@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_forecast_hour.view.*
 /**
  * Author :leilei on 2017/6/12 11:19
  */
-class ForecastHourAdapter(var datas: List<HourEntity> = ArrayList()) : RecyclerView.Adapter<ForecastHourAdapter.ViewHolder>() {
+class ForecastHourAdapter(var datas: List<HourEntity> = emptyList<HourEntity>()) : RecyclerView.Adapter<ForecastHourAdapter.ViewHolder>() {
 
     fun addData(newDatas: List<HourEntity>){
         datas = newDatas

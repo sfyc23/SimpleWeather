@@ -18,6 +18,12 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        debug {
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+
     }
 }
 
@@ -49,11 +55,8 @@ dependencies {
     // Anko Commons
     compile "org.jetbrains.anko:anko-commons:$anko_version"
 
-
-
     compile 'com.google.code.gson:gson:2.7'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-
 
     compile 'joda-time:joda-time:2.9.9'
     compile 'com.github.SilenceDut:jpinyin:v1.0'
@@ -65,11 +68,7 @@ dependencies {
 
     compile 'com.trello.rxlifecycle2:rxlifecycle:2.1.0'
 
-    // If you want to use Kotlin syntax
     compile 'com.trello.rxlifecycle2:rxlifecycle-kotlin:2.1.0'
-    // If you want to use Kotlin syntax with Android Lifecycle
-//    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle-kotlin:2.1.0'
-// If you want pre-written Activities and Fragments you can subclass as providers
     compile 'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0'
 
     testCompile 'junit:junit:4.12'

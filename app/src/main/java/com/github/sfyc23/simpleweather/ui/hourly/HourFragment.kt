@@ -21,8 +21,7 @@ import kotlinx.android.synthetic.main.fragment_daily.*
  */
 class HourFragment : RxFragment() {
 
-//    var spLastForecast: String by DelegatesExt.preference(OverviewFragment.SP_KEY_FORECAST, OverviewFragment.SP_VLAUE_DEFAULT_FORECAST)
-//    var gson: Gson = Gson()
+    private lateinit var  mAdapter : ForecastHourAdapter
 
     companion object Factory {
         fun newInstance(): HourFragment {
@@ -37,12 +36,14 @@ class HourFragment : RxFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        mAdapter = ForecastHourAdapter()
+
         recyclerView.apply {
             setHasFixedSize(true)
             var linearlayoutManager = LinearLayoutManager(context)
             layoutManager = linearlayoutManager
-//            var fhAdapter = ForecastHourAdapter(fr.forecast.forecastday.get(0).hour)
-            recyclerView.adapter = mAdapter
+            adapter = mAdapter
         }
 
 
@@ -56,13 +57,12 @@ class HourFragment : RxFragment() {
 
     }
 
-    var mAdapter = ForecastHourAdapter()
+
 
     fun loadData(fr: ForecastResult?) {
         if (fr == null) {
             return
         }
-//        fr.forecast.forecastday.get(0).hour.toString().log()
         mAdapter.addData(fr.forecast.forecastday.get(0).hour)
     }
 

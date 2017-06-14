@@ -1,7 +1,6 @@
 package com.github.sfyc23.weather.ui.fragments
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +12,7 @@ import com.github.sfyc23.simpleweather.data.model.ForecastResult
 import com.github.sfyc23.simpleweather.data.network.HttpManager
 import com.github.sfyc23.simpleweather.data.network.WeatherObserver
 import com.github.sfyc23.simpleweather.ui.city.CityActivity
+import com.github.sfyc23.simpleweather.util.UiThreadHandler
 import com.github.sfyc23.simpleweather.util.rxbus.busPostSticky
 import com.github.sfyc23.simpleweather.util.rxbus.busRemoveStickyEvent
 import com.github.sfyc23.simpleweather.util.rxbus.busToObservableSticky
@@ -108,8 +108,8 @@ class OverviewFragment : RxFragment() {
         if (!isForced) {
             var currentTime: Long = Date().time
             if (currentTime - spUpdateTime < MIN_REFRESH_INTERVAL) {
+                UiThreadHandler.postDelayed(Runnable { srlOverview.isRefreshing = false },1000)
 
-                Handler().postDelayed({ srlOverview.isRefreshing = false }, 1000)
                 return;
             }
         }

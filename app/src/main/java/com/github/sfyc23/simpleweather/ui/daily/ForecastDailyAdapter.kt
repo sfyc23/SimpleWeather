@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.item_forecast_daily_header.view.*
 /**
  * Author :leilei on 2017/6/12 11:19
  */
-class ForecastDailyAdapter(var datas: List<ForecastdayEntity> = ArrayList<ForecastdayEntity>())
+class ForecastDailyAdapter(var datas: List<ForecastdayEntity> =  emptyList<ForecastdayEntity>())
     : RecyclerView.Adapter<ForecastDailyAdapter.ViewHolder>(), StickyHeaderAdapter<ForecastDailyAdapter.HeaderViewHolder> {
 
     fun addData(newDatas: List<ForecastdayEntity>){

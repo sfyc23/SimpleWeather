@@ -18,46 +18,7 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 
-    <style name="RlOverview">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">80dp</item>
-    </style>
 
-
-    <style name="IvOverviewIcon">
-        <item name="android:id">@id/overview_icon_left</item>
-        <item name="android:layout_width">32dp</item>
-        <item name="android:layout_height">32dp</item>
-        <item name="android:layout_centerVertical">true</item>
-        <item name="android:layout_marginLeft">16dp</item>
-        <item name="android:layout_marginRight">16dp</item>
-    </style>
-
-    <style name="TvOverviewRight">
-        <item name="android:id">@id/overview_text_right_top</item>
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginTop">18dp</item>
-        <item name="android:text">Feels Like</item>
-        <item name="android:layout_toRightOf">@id/overview_icon_left</item>
-    </style>
-
-    <style name="TvOverviewContent">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:textSize">22sp</item>
-        <item name="android:layout_toRightOf">@id/overview_icon_left</item>
-        <item name="android:layout_marginTop">4dp</item>
-        <item name="android:layout_below">@id/overview_text_right_top</item>
-    </style>
-
-    <style name="DivideOverview">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">1dp</item>
-        <item name="android:layout_alignParentBottom">true</item>
-        <item name="android:layout_marginLeft">64dp</item>
-        <item name="android:background">@color/colorPrimary</item>
-    </style>
 
     <!--    15天内天气预报                      -->
     <style name="LlDaily">

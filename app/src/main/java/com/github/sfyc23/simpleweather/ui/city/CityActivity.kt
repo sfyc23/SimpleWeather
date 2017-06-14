@@ -74,7 +74,7 @@ class CityActivity : AppCompatActivity() {
 
 
     fun seacherCity(cityName: String) {
-        cityName.log("cityName")
+//        cityName.log("cityName")
         var weatherService = HttpManager.getInstance().weatherService
         weatherService.getWeatherSearch(cityName)
                 //防止重复点击
@@ -98,7 +98,6 @@ class CityActivity : AppCompatActivity() {
                             alert("当前城市为 $spCityName，是否切换到 $cityName", "切换城市") {
                                 yesButton {
                                     spCityName = cityName
-//                                    RxBus.getDefault().postSticky(CityEvent(cityName))
                                     busPostSticky(CityEvent(cityName))
                                     finish()
                                 }

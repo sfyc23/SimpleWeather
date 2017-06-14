@@ -2,6 +2,7 @@ package com.github.sfyc23.simpleweather.ui
 
 import android.app.Application
 import com.antonioleiva.weatherapp.extensions.DelegatesExt
+import com.squareup.leakcanary.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 
 /**
@@ -17,9 +18,14 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return;
+
+
+        if(BuildConfig.DEBUG){
+            if (LeakCanary.isInAnalyzerProcess(this)) {
+                return;
+            }
+            LeakCanary.install(this);
         }
-        LeakCanary.install(this);
+
     }
 }
