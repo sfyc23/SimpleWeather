@@ -88,7 +88,6 @@ data class ForecastdayEntity(
 )
 
 
-
 data class DayEntity(
         var maxtemp_c: Double ,
         var mintemp_c: Double ,

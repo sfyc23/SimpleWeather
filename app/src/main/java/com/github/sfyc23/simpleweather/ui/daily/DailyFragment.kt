@@ -46,13 +46,16 @@ class DailyFragment : RxFragment() {
 
         recyclerView.apply {
             setHasFixedSize(true)
-            var linearlayoutManager = LinearLayoutManager(context)
-            layoutManager = linearlayoutManager
+
+            layoutManager = object :LinearLayoutManager(context){
+                override fun canScrollVertically(): Boolean {
+                    return true
+                }
+            }
             val decor = StickyHeaderDecoration(mAdapter)
             adapter = mAdapter
             addItemDecoration(decor, 0)
         }
-
 
         loadData(DelegatesExt.forecastResult)
 
@@ -65,13 +68,7 @@ class DailyFragment : RxFragment() {
     }
 
     fun loadData(fr: ForecastResult?) {
-//        if (fr == null) {
-//            return
-//        }
         fr?.let { mAdapter.addData(fr.forecast.forecastday) }
-
-
-
     }
 
     override fun onDestroy() {

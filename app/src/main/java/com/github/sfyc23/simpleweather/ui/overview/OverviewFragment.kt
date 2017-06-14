@@ -77,9 +77,14 @@ class OverviewFragment : RxFragment() {
         }
 
 
-        srlOverview.setOnRefreshListener {
-            requestWeather(spCityName)
+        srlOverview.apply {
+            setColorSchemeResources(android.R.color.holo_purple, android.R.color.holo_blue_light,
+                    android.R.color.holo_green_light, android.R.color.holo_orange_light)
+            setOnRefreshListener {
+                requestWeather(spCityName)
+            }
         }
+
 
 
         try {
@@ -109,7 +114,6 @@ class OverviewFragment : RxFragment() {
             var currentTime: Long = Date().time
             if (currentTime - spUpdateTime < MIN_REFRESH_INTERVAL) {
                 UiThreadHandler.postDelayed(Runnable { srlOverview.isRefreshing = false },1000)
-
                 return;
             }
         }
@@ -129,7 +133,6 @@ class OverviewFragment : RxFragment() {
                     override fun onWeatherError(message: String) {
                         toast(message)
                     }
-
                     override fun onWeatherNext(fr: ForecastResult) {
 
                         spUpdateTime = Date().time
@@ -141,7 +144,6 @@ class OverviewFragment : RxFragment() {
                         busPostSticky(UpdateForecastEvent(fr))
 
                         loadData(fr)
-
 
                     }
                 })

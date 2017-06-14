@@ -19,7 +19,7 @@ class HttpManager private constructor(){
         val instance = HttpManager()
     }
 
-    private val DEFAULT_TIMEOUT = 10L
+    private val DEFAULT_TIMEOUT = 25L
     val mRetrofit: Retrofit
     val weatherService: WeatherService
 
@@ -31,8 +31,8 @@ class HttpManager private constructor(){
                 .build();
 
         mRetrofit = Retrofit.Builder()
-//                .addConverterFactory(GsonConverterFactory.create())
-                .addConverterFactory(ResponseConvertFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+//                .addConverterFactory(ResponseConvertFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(WeatherService.BASE_URL)
                 .client(okHttpClient)

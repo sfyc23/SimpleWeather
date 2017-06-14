@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="160dp"
+    android:paddingBottom="16dp"
     android:orientation="vertical">
 
     <RelativeLayout
