@@ -48,6 +48,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
 
-  [1]: http://oihnadz1x.bkt.clouddn.com/simpleWeatherAdd.jpg?imageView2/3/w/1000/h/640/interlace/1
+  [1]: http://github.sfyc.ltd/simpleWeatherAdd.jpg?imageView2/3/w/1000/h/640/interlace/1
   [2]: https://www.apixu.com
   [3]: http://fir.im/simpleWeather
